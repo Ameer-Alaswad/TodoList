@@ -4,6 +4,7 @@ const textInput = document.querySelector("#textInput");
 const addAtodo = document.querySelector("#addAtodo");
 const removeTodos = document.querySelector("#remove-all-todos");
 const removeChecked = document.querySelector("#remove-all-checked");
+const checkAllTodos = document.querySelector("#check-all-todos");
 
 submit.addEventListener("submit", (e) => {
   if (textInput.value === "") {
@@ -31,11 +32,13 @@ submit.addEventListener("submit", (e) => {
     deleteCheckboxContainer.classList.add("deleteCheckboxContainer");
     DeleteButton.classList.add("deleteButton");
     checkbox.classList.add("checkbox");
-    DeleteButton.addEventListener("click", () =>
-      list.remove((addAtodo.textContent = "There are no Todos!"))
-    );
+    DeleteButton.addEventListener("click", () => {
+      list.remove();
+      if (todosContainer.children.length === 0) {
+        addAtodo.textContent = "There are no Todos!";
+      }
+    });
     checkbox.addEventListener("click", (e) => {
-      const listText = list.innerHTML;
       let checkboxState = e.target.checked;
       if (checkboxState) {
         span.style.opacity = "0.5";
@@ -49,11 +52,27 @@ submit.addEventListener("submit", (e) => {
   }
   const allLis = document.querySelectorAll("li");
   removeTodos.addEventListener("click", () => {
-    [...allLis].map((li) => li.remove());
+    [...allLis].map((li) => {
+      li.remove();
+      addAtodo.textContent = "There are no Todos!";
+    });
   });
   removeChecked.addEventListener("click", () => {
+    let deleteChecked = [...allLis].map((li) => {
+      if (li.childNodes[1].children[0].checked) {
+        li.remove();
+        if (todosContainer.children.length === 0) {
+          addAtodo.textContent = "There are no Todos!";
+        }
+      }
+    });
+  });
+  checkAllTodos.addEventListener("click", (e) => {
     [...allLis].map((li) => {
-      if (li.childNodes[1].children[0].checked) li.remove();
+      if (!li.childNodes[1].children[0].checked) {
+        li.childNodes[1].children[0].checked = "true";
+        li.children[0].classList.add("todoStyling");
+      }
     });
   });
 });
