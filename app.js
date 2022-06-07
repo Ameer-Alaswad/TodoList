@@ -2,6 +2,8 @@ const todosContainer = document.querySelector("ul");
 const submit = document.querySelector("form");
 const textInput = document.querySelector("#textInput");
 const addAtodo = document.querySelector("#addAtodo");
+const removeTodos = document.querySelector("#remove-all-todos");
+const removeChecked = document.querySelector("#remove-all-checked");
 
 submit.addEventListener("submit", (e) => {
   if (textInput.value === "") {
@@ -10,7 +12,6 @@ submit.addEventListener("submit", (e) => {
   } else {
     e.preventDefault();
     addAtodo.textContent = "";
-
     let list = document.createElement("li");
     let text = document.createTextNode(textInput.value);
     let span = document.createElement("span");
@@ -30,7 +31,9 @@ submit.addEventListener("submit", (e) => {
     deleteCheckboxContainer.classList.add("deleteCheckboxContainer");
     DeleteButton.classList.add("deleteButton");
     checkbox.classList.add("checkbox");
-    DeleteButton.addEventListener("click", () => list.remove());
+    DeleteButton.addEventListener("click", () =>
+      list.remove((addAtodo.textContent = "There are no Todos!"))
+    );
     checkbox.addEventListener("click", (e) => {
       const listText = list.innerHTML;
       let checkboxState = e.target.checked;
@@ -44,4 +47,13 @@ submit.addEventListener("submit", (e) => {
     });
     textInput.value = "";
   }
+  const allLis = document.querySelectorAll("li");
+  removeTodos.addEventListener("click", () => {
+    [...allLis].map((li) => li.remove());
+  });
+  removeChecked.addEventListener("click", () => {
+    [...allLis].map((li) => {
+      if (li.childNodes[1].children[0].checked) li.remove();
+    });
+  });
 });

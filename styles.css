@@ -88,3 +88,9 @@ background-color: #2962ff1d;
 		transform: translateX(0);
 	}
 }
+#addAtodo{
+    font-weight: 100;
+    margin-top: 80px;
+    font-size: medium;
+    font-style: italic;
+}
